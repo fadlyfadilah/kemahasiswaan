@@ -51,6 +51,19 @@ class Mahasiswa extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function getImage()
+    {
+        if (substr($this->poto, 0, 5) == "https") {
+            return $this->poto;
+        }
+
+        if ($this->poto) {
+            return asset('/uploads/imgCover/' . $this->poto);
+        }
+
+        return 'https://via.placeholder.com/500x500.png?text=No+Cover';
+    }
+    
     public function mahasiswaSemesters()
     {
         return $this->hasMany(Semester::class, 'mahasiswa_id', 'id');

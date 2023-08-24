@@ -115,12 +115,15 @@
                 <span class="help-block">{{ trans('cruds.mahasiswa.fields.noortu_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="poto">{{ trans('cruds.mahasiswa.fields.poto') }}</label>
-                <input class="form-control {{ $errors->has('poto') ? 'is-invalid' : '' }}" type="text" name="poto" id="poto" value="{{ old('poto', $mahasiswa->poto) }}">
-                @if($errors->has('poto'))
+                <label for="image">Poto</label><br/>
+                <img id="previewImage" class="mb-2" src="{{ $mahasiswa->getImage() }}" width="15%" alt="">
+                <div class="custom-file">
+                    <input type="file" name="poto" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label {{ $errors->has('poto') ? 'is-invalid' : '' }}" for="customFile">Pilih Gambar</label>
+                </div>
+                @if ($errors->has('poto'))
                     <span class="text-danger">{{ $errors->first('poto') }}</span>
                 @endif
-                <span class="help-block">{{ trans('cruds.mahasiswa.fields.poto_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
@@ -133,4 +136,28 @@
 
 
 
+@endsection
+@section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+
+    // fungsi ini akan berjalan ketika akan menambahkan gambar dimana fungsi ini
+    // akan membuat preview image sebelum kita simpan gambar tersebut.      
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#previewImage').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Ketika tag input file denghan class image di klik akan menjalankan fungsi di atas
+    $("#image").change(function() {
+        readURL(this);
+    });
+</script>
 @endsection

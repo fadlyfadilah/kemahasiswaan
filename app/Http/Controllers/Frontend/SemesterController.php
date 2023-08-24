@@ -19,11 +19,30 @@ class SemesterController extends Controller
         abort_if(Gate::denies('semester_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $mahasiswa = Mahasiswa::first();
+        if ($mahasiswa === NULL) {
+            return back()->with('error', 'Isi Dahulu data mahasiswa!');
+        }
 
-        $semester = Semester::with(['mahasiswa', 'created_by'])->where('semester', $semesterr)->first();
+        for ($semesterToCheck = 1; $semesterToCheck <= 8; $semesterToCheck++) {
+            if ($semesterr == $semesterToCheck) {
+                $semester = Semester::with(['mahasiswa', 'created_by'])->where('semester', $semesterr)->first();
 
-        return view('frontend.semesters.index', compact('semester', 'mahasiswa', 'semesterr'));
+                if ($semesterToCheck != 1) {
+                    $previousSemester = Semester::with('mahasiswa')->where('semester', $semesterToCheck - 1)->first();
+
+                    if ($previousSemester === NULL) {
+                        return redirect()->route('frontend.semesters.indexx', ['semesterr' => $semesterToCheck - 1])->with('error', 'Data semester ' . ($semesterToCheck - 1) . ' belum tersedia. Silahkan isi Terlebih Dahulu');
+                    }
+                }
+
+                return view('frontend.semesters.index', compact('semester', 'mahasiswa', 'semesterr'));
+            }
+        }
+
+        // Jika nomor semester tidak valid (di luar rentang 1-8)
+        return back()->with('error', 'Nomor semester tidak valid.');
     }
+
 
     public function create()
     {

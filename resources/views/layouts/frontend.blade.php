@@ -47,7 +47,8 @@
                             @foreach (config('panel.available_languages') as $langLocale => $langName)
                                 <a class="dropdown-item"
                                     href="{{ url()->current() }}?change_language={{ $langLocale }}">{{ strtoupper($langLocale) }}
-                                    ({{ $langName }})</a>
+                                    ({{ $langName }})
+                                </a>
                             @endforeach
                         </div>
                     </li>
@@ -64,6 +65,13 @@
                     <div class="row mb-2">
                         <div class="col-lg-12">
                             <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                        </div>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="row mb-2">
+                        <div class="col-lg-12">
+                            <div class="alert alert-success" role="alert">{{ session('error') }}</div>
                         </div>
                     </div>
                 @endif

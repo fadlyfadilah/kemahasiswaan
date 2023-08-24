@@ -145,15 +145,15 @@
                                     <span class="help-block">{{ trans('cruds.mahasiswa.fields.noortu_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="poto">{{ trans('cruds.mahasiswa.fields.poto') }}</label>
-                                    <input class="form-control" type="text" name="poto" id="poto"
-                                        value="{{ old('poto', '') }}">
+                                    <label for="image">Poto</label>
+                                    <img id="previewImage" class="mb-2" src="#" width="15%" alt="">
+                                    <div class="custom-file">
+                                        <input type="file" name="poto" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label {{ $errors->has('poto') ? 'is-invalid' : '' }}" for="customFile">Pilih Gambar</label>
+                                    </div>
                                     @if ($errors->has('poto'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('poto') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('poto') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.mahasiswa.fields.poto_helper') }}</span>
                                 </div>
                             @else
                                 <div class="form-group">
@@ -205,21 +205,25 @@
                                     <span class="help-block">{{ trans('cruds.mahasiswa.fields.ttl_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="required" for="perguruan_id">{{ trans('cruds.mahasiswa.fields.perguruan') }}</label>
+                                    <label class="required"
+                                        for="perguruan_id">{{ trans('cruds.mahasiswa.fields.perguruan') }}</label>
                                     <select class="form-control select2" name="perguruan_id" id="perguruan_id" required>
                                         <option value="" disabled>Pilih Perguruan Tinggi!</option>
                                         @foreach ($perguruans as $perguruan)
-                                            <option value="{{ $perguruan->id }}" {{ $mahasiswa->perguruan_id == $perguruan->id ? 'selected' : '' }}>
+                                            <option value="{{ $perguruan->id }}"
+                                                {{ $mahasiswa->perguruan_id == $perguruan->id ? 'selected' : '' }}>
                                                 {{ $perguruan->nama }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group" id="prodi_group">
-                                    <label class="required" for="prodi_id">{{ trans('cruds.mahasiswa.fields.prodi') }}</label>
+                                    <label class="required"
+                                        for="prodi_id">{{ trans('cruds.mahasiswa.fields.prodi') }}</label>
                                     <select class="form-control select2" name="prodi_id" id="prodi_id" required>
                                         @foreach ($prodis as $prodi)
-                                            <option value="{{ $prodi->id }}" {{ $mahasiswa->prodi_id == $prodi->id ? 'selected' : '' }}>
+                                            <option value="{{ $prodi->id }}"
+                                                {{ $mahasiswa->prodi_id == $prodi->id ? 'selected' : '' }}>
                                                 {{ $prodi->nama }}
                                             </option>
                                         @endforeach
@@ -294,15 +298,15 @@
                                     <span class="help-block">{{ trans('cruds.mahasiswa.fields.noortu_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="poto">{{ trans('cruds.mahasiswa.fields.poto') }}</label>
-                                    <input class="form-control" type="text" name="poto" id="poto"
-                                        value="{{ old('poto', $mahasiswa->poto) }}">
+                                    <label for="image">Poto</label><br/>
+                                    <img id="previewImage" class="mb-2" src="{{ $mahasiswa->getImage() }}" width="15%" alt="">
+                                    <div class="custom-file">
+                                        <input type="file" name="poto" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label {{ $errors->has('poto') ? 'is-invalid' : '' }}" for="customFile">Pilih Gambar</label>
+                                    </div>
                                     @if ($errors->has('poto'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('poto') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('poto') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.mahasiswa.fields.poto_helper') }}</span>
                                 </div>
                             @endif
 
@@ -320,39 +324,60 @@
     </div>
 @endsection
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var perguruanSelect = $('#perguruan_id');
-    var prodiGroup = $('#prodi_group');
-    var prodiSelect = $('#prodi_id');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var perguruanSelect = $('#perguruan_id');
+        var prodiGroup = $('#prodi_group');
+        var prodiSelect = $('#prodi_id');
 
-    function updateProdiOptions() {
-        var selectedPerguruan = perguruanSelect.val();
-        if (selectedPerguruan === '') {
-            prodiGroup.hide();
-            prodiSelect.empty();
-            return;
+        function updateProdiOptions() {
+            var selectedPerguruan = perguruanSelect.val();
+            if (selectedPerguruan === '') {
+                prodiGroup.hide();
+                prodiSelect.empty();
+                return;
+            }
+
+            $.get(`/get-prodis-by-perguruan/${selectedPerguruan}`, function(data) {
+                prodiSelect.empty();
+
+                if (data.length > 0) {
+                    prodiGroup.show();
+                    data.forEach(function(prodi) {
+                        prodiSelect.append($('<option>', {
+                            value: prodi.id,
+                            text: prodi.nama
+                        }));
+                    });
+                } else {
+                    prodiGroup.hide();
+                }
+            });
         }
 
-        $.get(`/get-prodis-by-perguruan/${selectedPerguruan}`, function(data) {
-            prodiSelect.empty();
-
-            if (data.length > 0) {
-                prodiGroup.show();
-                data.forEach(function(prodi) {
-                    prodiSelect.append($('<option>', {
-                        value: prodi.id,
-                        text: prodi.nama
-                    }));
-                });
-            } else {
-                prodiGroup.hide();
-            }
+        perguruanSelect.on('change', function() {
+            updateProdiOptions();
         });
-    }
-
-    perguruanSelect.on('change', function () {
-        updateProdiOptions();
-    });
-</script>
+    </script>
+    <script>
+    
+        // fungsi ini akan berjalan ketika akan menambahkan gambar dimana fungsi ini
+        // akan membuat preview image sebelum kita simpan gambar tersebut.      
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+    
+                reader.onload = function(e) {
+                    $('#previewImage').attr('src', e.target.result);
+                }
+    
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    
+        // Ketika tag input file denghan class image di klik akan menjalankan fungsi di atas
+        $("#image").change(function() {
+            readURL(this);
+        });
+    </script>
 @endsection

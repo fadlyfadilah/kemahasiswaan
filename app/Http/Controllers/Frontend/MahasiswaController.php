@@ -9,8 +9,8 @@ use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Models\Mahasiswa;
 use App\Models\PerguruanTinggi;
 use App\Models\Prodi;
-use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class MahasiswaController extends Controller
@@ -48,6 +48,19 @@ class MahasiswaController extends Controller
 
     public function store(StoreMahasiswaRequest $request)
     {
+        $this->validate($request, [
+            'poto' => 'image|mimes:png,jpg,jpeg',
+        ]);
+
+        $attr = $request->all();
+
+        if ($request->hasFile('poto')) {
+            $file = $request->file('poto');
+            $uploadFile = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/imgCover/', $uploadFile);
+            $attr['poto'] = $uploadFile;
+        }
+
         $mahasiswa = Mahasiswa::updateOrCreate([
             'created_by_id' => auth()->id(),
             'nim' => $request->get('nim'),
@@ -63,7 +76,7 @@ class MahasiswaController extends Controller
             'nohp'    => $request->get("nohp"),
             'nama_ortu'    => $request->get("nama_ortu"),
             'noortu'    => $request->get("noortu"),
-            'poto'    => $request->get("poto"),
+            'poto'    => $uploadFile,
             'status'    => 'aktif',
         ]);
 

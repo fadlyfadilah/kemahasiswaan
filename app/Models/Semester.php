@@ -28,6 +28,7 @@ class Semester extends Model
         'sks',
         'ipsfile',
         'ips',
+        'approved',
         'updated_at',
         'deleted_at',
         'created_by_id',

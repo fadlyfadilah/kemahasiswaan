@@ -84,7 +84,7 @@
                             {{ trans('cruds.mahasiswa.fields.poto') }}
                         </th>
                         <td>
-                            {{ $mahasiswa->poto }}
+                            <img src="{{ $mahasiswa->getImage() }}" alt="Poto" width="15%"> 
                         </td>
                     </tr>
                     <tr>

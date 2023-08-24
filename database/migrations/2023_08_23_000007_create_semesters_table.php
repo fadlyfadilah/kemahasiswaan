@@ -16,6 +16,7 @@ class CreateSemestersTable extends Migration
             $table->integer('sks')->nullable();
             $table->string('ipsfile')->nullable();
             $table->string('ips')->nullable();
+            $table->boolean('approved')->default(0)->nullable();
             $table->timestamps();
         });
     }

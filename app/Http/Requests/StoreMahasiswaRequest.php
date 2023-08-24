@@ -63,10 +63,6 @@ class StoreMahasiswaRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'poto' => [
-                'string',
-                'nullable',
-            ],
         ];
     }
 }
