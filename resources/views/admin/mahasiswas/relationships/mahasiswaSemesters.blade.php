@@ -22,7 +22,7 @@
 
                             </th>
                             <th>
-                                {{ trans('cruds.semester.fields.id') }}
+                                No
                             </th>
                             <th>
                                 {{ trans('cruds.semester.fields.mahasiswa') }}
@@ -46,6 +46,9 @@
                                 {{ trans('cruds.semester.fields.ips') }}
                             </th>
                             <th>
+                                Status
+                            </th>
+                            <th>
                                 &nbsp;
                             </th>
                         </tr>
@@ -57,7 +60,7 @@
 
                                 </td>
                                 <td>
-                                    {{ $semester->id ?? '' }}
+                                    {{ $loop->iteration ?? '' }}
                                 </td>
                                 <td>
                                     {{ $semester->mahasiswa->nama ?? '' }}
@@ -69,16 +72,20 @@
                                     {{ $semester->semester ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $semester->frs ?? '' }}
+                                    <a href="{{ $semester->getFrs() ?? '' }}" target="_blank">File IPS</a>
                                 </td>
                                 <td>
                                     {{ $semester->sks ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $semester->ipsfile ?? '' }}
+                                    <a href="{{ $semester->getIps() ?? '' }}" target="_blank">File IPS</a>
                                 </td>
                                 <td>
                                     {{ $semester->ips ?? '' }}
+                                </td>
+                                <td>
+                                    <span style="display:none">{{ $semester->approved ?? '' }}</span>
+                                    <input type="checkbox" disabled="disabled" {{ $semester->approved ? 'checked' : '' }}>
                                 </td>
                                 <td>
                                     @can('semester_show')
@@ -91,6 +98,16 @@
                                         <a class="btn btn-xs btn-info" href="{{ route('admin.semesters.edit', $semester->id) }}">
                                             {{ trans('global.edit') }}
                                         </a>
+                                        @if ($semester->approved === 0)
+                                            <form action="{{ route('admin.semesters.approve', $semester->id) }}" method="POST"
+                                                onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
+                                                style="display: inline-block;">
+                                                <input type="hidden" name="_method" value="PATCH">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="approved" value="1">
+                                                <input type="submit" class="btn btn-xs btn-success" value="Approve">
+                                            </form>
+                                        @endif
                                     @endcan
 
                                     @can('semester_delete')

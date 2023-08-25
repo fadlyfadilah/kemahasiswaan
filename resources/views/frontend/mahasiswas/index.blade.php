@@ -145,12 +145,16 @@
                                     <span class="help-block">{{ trans('cruds.mahasiswa.fields.noortu_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="image">Poto</label>
-                                    <img id="previewImage" class="mb-2" src="#" width="15%" alt="">
-                                    <div class="custom-file">
-                                        <input type="file" name="poto" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label {{ $errors->has('poto') ? 'is-invalid' : '' }}" for="customFile">Pilih Gambar</label>
+                                    <label for="image-input">Poto Profil</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" name="poto" class="custom-file-input"
+                                                id="image-input" accept="image/*" onchange="previewImage(event)">
+                                            <label class="custom-file-label" for="image-input">Pilih Gambar</label>
+                                        </div>
                                     </div>
+                                    <img id="image-preview" src="{{ $mahasiswa->poto ?? '#' }}" alt="Preview"
+                                        style="display: none;" class="mt-2 img-fluid" width="15%">
                                     @if ($errors->has('poto'))
                                         <span class="text-danger">{{ $errors->first('poto') }}</span>
                                     @endif
@@ -298,12 +302,19 @@
                                     <span class="help-block">{{ trans('cruds.mahasiswa.fields.noortu_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="image">Poto</label><br/>
-                                    <img id="previewImage" class="mb-2" src="{{ $mahasiswa->getImage() }}" width="15%" alt="">
-                                    <div class="custom-file">
-                                        <input type="file" name="poto" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label {{ $errors->has('poto') ? 'is-invalid' : '' }}" for="customFile">Pilih Gambar</label>
+                                    <label for="image-input">Poto Profil</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" name="poto" class="custom-file-input"
+                                                id="image-input" accept="image/*" onchange="previewImage(event)">
+                                            <label class="custom-file-label" for="image-input">Pilih Gambar</label>
+                                        </div>
                                     </div>
+                                    <img id="image-preview" src="{{ $mahasiswa->poto ?? '#' }}" alt="Preview"
+                                        style="display: none;" class="mt-2 img-fluid" width="15%">
+                                    <img id="previewImage" class="mb-2" src="{{ $mahasiswa->getImage() }}"
+                                        width="15%" alt="">
+
                                     @if ($errors->has('poto'))
                                         <span class="text-danger">{{ $errors->first('poto') }}</span>
                                     @endif
@@ -360,24 +371,26 @@
         });
     </script>
     <script>
-    
-        // fungsi ini akan berjalan ketika akan menambahkan gambar dimana fungsi ini
-        // akan membuat preview image sebelum kita simpan gambar tersebut.      
-        function readURL(input) {
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('image-preview');
+            const label = input.nextElementSibling;
+
             if (input.files && input.files[0]) {
-                var reader = new FileReader();
-    
+                const reader = new FileReader();
+
                 reader.onload = function(e) {
-                    $('#previewImage').attr('src', e.target.result);
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
                 }
-    
+
                 reader.readAsDataURL(input.files[0]);
+                label.innerHTML = input.files[0].name;
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+                label.innerHTML = 'Pilih Gambar';
             }
         }
-    
-        // Ketika tag input file denghan class image di klik akan menjalankan fungsi di atas
-        $("#image").change(function() {
-            readURL(this);
-        });
     </script>
 @endsection

@@ -23,7 +23,7 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.semester.fields.id') }}
+                            No
                         </th>
                         <th>
                             {{ trans('cruds.semester.fields.mahasiswa') }}
@@ -49,7 +49,7 @@
 
                             </td>
                             <td>
-                                {{ $semester->id ?? '' }}
+                                {{ $loop->iteration ?? '' }}
                             </td>
                             <td>
                                 {{ $semester->mahasiswa->nama ?? '' }}

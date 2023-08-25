@@ -31,7 +31,11 @@ class SemesterController extends Controller
                     $previousSemester = Semester::with('mahasiswa')->where('semester', $semesterToCheck - 1)->first();
 
                     if ($previousSemester === NULL) {
-                        return redirect()->route('frontend.semesters.indexx', ['semesterr' => $semesterToCheck - 1])->with('error', 'Data semester ' . ($semesterToCheck - 1) . ' belum tersedia. Silahkan isi Terlebih Dahulu');
+                        return redirect()->route('frontend.semesters.indexx', ['semesterr' => $semesterToCheck - 1])->with('error', 'Data semester ' . ($semesterToCheck - 1) . ' belum tersedia.');
+                    }
+
+                    if (!$previousSemester->approved) {
+                        return redirect()->route('frontend.semesters.indexx', ['semesterr' => $semesterToCheck - 1])->with('error', 'Semester ' . ($semesterToCheck - 1) . ' belum diapprove.');
                     }
                 }
 
@@ -56,9 +60,43 @@ class SemesterController extends Controller
     public function store(StoreSemesterRequest $request)
     {
         $mahasiswa = Mahasiswa::where('created_by_id', auth()->id())->first();
+
+        $this->validate($request, [
+            'frs' => 'nullable|mimes:pdf,docx',
+            'ipsfile' => 'nullable|mimes:pdf,docx',
+        ]);
+
         $attr = $request->all();
-        $attr['mahasiswa_id'] = $mahasiswa->id;
-        $semester = Semester::create($attr);
+        $semesterData = [
+            'tahunangkatan' => $request->get('tahunangkatan'),
+            'sks' => $request->get('sks'),
+            'ips' => $request->get('ips')
+        ];
+
+        if ($request->hasFile('frs')) {
+            $file = $request->file('frs');
+            $uploadFilefrs = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/frs/', $uploadFilefrs);
+            $attr['frs'] = $uploadFilefrs;
+            $semesterData['frs'] = $uploadFilefrs;
+        }
+
+        if ($request->hasFile('ipsfile')) {
+            $file = $request->file('ipsfile');
+            $uploadFileips = time() . '_' . $file->getClientOriginalName();
+            $file->move('uploads/ipsfile/', $uploadFileips);
+            $attr['ipsfile'] = $uploadFileips;
+            $semesterData['ipsfile'] = $uploadFileips;
+        }
+
+        $semester = Semester::updateOrCreate(
+            [
+                'created_by_id' => auth()->id(),
+                'semester' => $request->get('semester'),
+                'mahasiswa_id' => $mahasiswa->id,
+            ],
+            $semesterData
+        );
 
         return redirect()->route('frontend.semesters.indexx', '1');
     }

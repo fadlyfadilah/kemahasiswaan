@@ -23,7 +23,7 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.perguruanTinggi.fields.id') }}
+                            No
                         </th>
                         <th>
                             {{ trans('cruds.perguruanTinggi.fields.nama') }}
@@ -43,7 +43,7 @@
 
                             </td>
                             <td>
-                                {{ $perguruanTinggi->id ?? '' }}
+                                {{ $loop->iteration ?? '' }}
                             </td>
                             <td>
                                 {{ $perguruanTinggi->nama ?? '' }}

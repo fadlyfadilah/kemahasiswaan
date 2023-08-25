@@ -27,19 +27,11 @@ class StoreSemesterRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'frs' => [
-                'string',
-                'nullable',
-            ],
             'sks' => [
                 'nullable',
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
-            ],
-            'ipsfile' => [
-                'string',
-                'nullable',
             ],
             'ips' => [
                 'string',

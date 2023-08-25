@@ -39,6 +39,32 @@ class Semester extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function getFrs()
+    {
+        if (substr($this->frs, 0, 5) == "https") {
+            return $this->frs;
+        }
+
+        if ($this->frs) {
+            return asset('/uploads/frs/' . $this->frs);
+        }
+
+        return 'https://via.placeholder.com/500x500.png?text=No+Cover';
+    }
+
+    public function getIps()
+    {
+        if (substr($this->ipsfile, 0, 5) == "https") {
+            return $this->ipsfile;
+        }
+
+        if ($this->ipsfile) {
+            return asset('/uploads/ipsfile/' . $this->ipsfile);
+        }
+
+        return 'https://via.placeholder.com/500x500.png?text=No+Cover';
+    }
+
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');

@@ -52,7 +52,7 @@
 
                             </td>
                             <td>
-                                {{ $mahasiswa->id ?? '' }}
+                                {{ $loop->iteration ?? '' }}
                             </td>
                             <td>
                                 {{ $mahasiswa->nim ?? '' }}

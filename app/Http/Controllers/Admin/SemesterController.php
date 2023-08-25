@@ -23,6 +23,17 @@ class SemesterController extends Controller
         return view('admin.semesters.index', compact('semesters'));
     }
 
+    public function approve(Semester $semester)
+    {
+        abort_if(Gate::denies('semester_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $semester->approved = request('approved');
+
+        $semester->save();
+
+        return back();
+    }
+
     public function create()
     {
         abort_if(Gate::denies('semester_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

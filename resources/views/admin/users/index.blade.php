@@ -43,16 +43,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
                         @foreach ($users as $key => $user)
                             <tr data-entry-id="{{ $user->id }}">
                                 <td>
 
                                 </td>
                                 <td>
-                                    {{ $no++ ?? '' }}
+                                    {{ $loop->iteration ?? '' }}
                                 </td>
                                 <td>
                                     {{ $user->name ?? '' }}

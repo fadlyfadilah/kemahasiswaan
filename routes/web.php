@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Semester
     Route::delete('semesters/destroy', 'SemesterController@massDestroy')->name('semesters.massDestroy');
+    Route::PATCH('semesters/approve/{semester}', 'SemesterController@approve')->name('semesters.approve');
     Route::resource('semesters', 'SemesterController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

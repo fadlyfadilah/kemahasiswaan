@@ -55,15 +55,11 @@
                                         class="help-block">{{ trans('cruds.semester.fields.tahunangkatan_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="frs">{{ trans('cruds.semester.fields.frs') }}</label>
-                                    <input class="form-control" type="text" name="frs" id="frs"
-                                        value="{{ old('frs', '') }}">
+                                    <label class="" for="frs">{{ trans('cruds.semester.fields.frs') }}</label>
+                                    <input class="form-control" type="file" name="frs" id="frs">
                                     @if ($errors->has('frs'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('frs') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('frs') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.semester.fields.frs_helper') }}</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="sks">{{ trans('cruds.semester.fields.sks') }}</label>
@@ -77,18 +73,15 @@
                                     <span class="help-block">{{ trans('cruds.semester.fields.sks_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ipsfile">{{ trans('cruds.semester.fields.ipsfile') }}</label>
-                                    <input class="form-control" type="text" name="ipsfile" id="ipsfile"
-                                        value="{{ old('ipsfile', '') }}">
+                                    <label class=""
+                                        for="ipsfile">{{ trans('cruds.semester.fields.ipsfile') }}</label>
+                                    <input class="form-control" type="file" name="ipsfile" id="ipsfile">
                                     @if ($errors->has('ipsfile'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('ipsfile') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('ipsfile') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.semester.fields.ipsfile_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ips">{{ trans('cruds.semester.fields.ips') }}</label>
+                                    <label for="ips">Jumlah {{ trans('cruds.semester.fields.ips') }}</label>
                                     <input class="form-control" type="text" name="ips" id="ips"
                                         value="{{ old('ips', '') }}">
                                     @if ($errors->has('ips'))
@@ -125,15 +118,12 @@
                                         class="help-block">{{ trans('cruds.semester.fields.tahunangkatan_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="frs">{{ trans('cruds.semester.fields.frs') }}</label>
-                                    <input class="form-control" type="text" name="frs" id="frs"
-                                        value="{{ old('frs', $semester->frs) }}">
+                                    <label class="" for="frs">{{ trans('cruds.semester.fields.frs') }}</label>
+                                    <input class="form-control" type="file" name="frs" id="frs">
                                     @if ($errors->has('frs'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('frs') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('frs') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.semester.fields.frs_helper') }}</span>
+                                    <a href="{{ $semester->getFrs() ?? '' }}" target="_blank">File Frs</a>
                                 </div>
                                 <div class="form-group">
                                     <label for="sks">{{ trans('cruds.semester.fields.sks') }}</label>
@@ -147,18 +137,16 @@
                                     <span class="help-block">{{ trans('cruds.semester.fields.sks_helper') }}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ipsfile">{{ trans('cruds.semester.fields.ipsfile') }}</label>
-                                    <input class="form-control" type="text" name="ipsfile" id="ipsfile"
-                                        value="{{ old('ipsfile', $semester->ipsfile) }}">
+                                    <label class=""
+                                        for="ipsfile">{{ trans('cruds.semester.fields.ipsfile') }}</label>
+                                    <input class="form-control" type="file" name="ipsfile" id="ipsfile">
                                     @if ($errors->has('ipsfile'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('ipsfile') }}
-                                        </div>
+                                        <span class="text-danger">{{ $errors->first('ipsfile') }}</span>
                                     @endif
-                                    <span class="help-block">{{ trans('cruds.semester.fields.ipsfile_helper') }}</span>
+                                    <a href="{{ $semester->getIps() ?? '' }}" target="_blank">File IPS</a>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ips">{{ trans('cruds.semester.fields.ips') }}</label>
+                                    <label for="ips">Jumlah {{ trans('cruds.semester.fields.ips') }}</label>
                                     <input class="form-control" type="text" name="ips" id="ips"
                                         value="{{ old('ips', $semester->ips) }}">
                                     @if ($errors->has('ips'))
