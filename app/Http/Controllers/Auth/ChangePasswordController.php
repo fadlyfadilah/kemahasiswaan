@@ -14,8 +14,11 @@ class ChangePasswordController extends Controller
     public function edit()
     {
         abort_if(Gate::denies('profile_password_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        if (auth()->user()->is_admin) {
+            return view('auth.passwords.edit');
+        }
 
-        return view('auth.passwords.edit');
+        return view('auth.passwords.edituser');
     }
 
     public function update(UpdatePasswordRequest $request)

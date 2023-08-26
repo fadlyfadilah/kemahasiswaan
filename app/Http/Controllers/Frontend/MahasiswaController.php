@@ -53,7 +53,7 @@ class MahasiswaController extends Controller
         ]);
 
         $attr = $request->all();
-
+        $uploadFile = '';
         if ($request->hasFile('poto')) {
             $file = $request->file('poto');
             $uploadFile = time() . '_' . $file->getClientOriginalName();

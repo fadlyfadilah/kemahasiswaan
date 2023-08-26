@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Mahasiswa
     Route::delete('mahasiswas/destroy', 'MahasiswaController@massDestroy')->name('mahasiswas.massDestroy');
+    Route::PATCH('mahasiswas/status/{mahasiswa}', 'MahasiswaController@status')->name('mahasiswas.status');
     Route::resource('mahasiswas', 'MahasiswaController');
 
     // Prodi

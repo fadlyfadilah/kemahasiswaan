@@ -62,8 +62,8 @@ class SemesterController extends Controller
         $mahasiswa = Mahasiswa::where('created_by_id', auth()->id())->first();
 
         $this->validate($request, [
-            'frs' => 'nullable|mimes:pdf,docx',
-            'ipsfile' => 'nullable|mimes:pdf,docx',
+            'frs' => 'image|mimes:jpg,png,jpeg',
+            'ipsfile' => 'image|mimes:jpg,png,jpeg',
         ]);
 
         $attr = $request->all();

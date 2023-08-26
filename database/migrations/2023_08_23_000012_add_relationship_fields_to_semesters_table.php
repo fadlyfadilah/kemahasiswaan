@@ -10,9 +10,9 @@ class AddRelationshipFieldsToSemestersTable extends Migration
     {
         Schema::table('semesters', function (Blueprint $table) {
             $table->unsignedBigInteger('mahasiswa_id')->nullable();
-            $table->foreign('mahasiswa_id', 'mahasiswa_fk_8912872')->references('id')->on('mahasiswas');
+            $table->foreign('mahasiswa_id', 'mahasiswa_fk_8912872')->references('id')->on('mahasiswas')->onDelete('cascade');
             $table->unsignedBigInteger('created_by_id')->nullable();
-            $table->foreign('created_by_id', 'created_by_fk_8912876')->references('id')->on('users');
+            $table->foreign('created_by_id', 'created_by_fk_8912876')->references('id')->on('users')->onDelete('cascade');
         });
     }
 }

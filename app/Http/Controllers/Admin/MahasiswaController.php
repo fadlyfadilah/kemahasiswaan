@@ -24,6 +24,17 @@ class MahasiswaController extends Controller
         return view('admin.mahasiswas.index', compact('mahasiswas'));
     }
 
+    public function status(Mahasiswa $mahasiswa)
+    {
+        abort_if(Gate::denies('mahasiswa_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $mahasiswa->status = request('status');
+
+        $mahasiswa->save();
+
+        return back();
+    }
+
     public function create()
     {
         abort_if(Gate::denies('mahasiswa_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

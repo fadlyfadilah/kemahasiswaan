@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\Semester;
+
 class HomeController
 {
     public function index()
     {
-        return view('frontend.home');
+        $semesters = Semester::get();
+
+        $labels = $semesters->pluck('semester');
+        $data = $semesters->pluck('ips');
+        
+        return view('frontend.home', compact('labels', 'data'));
     }
 }

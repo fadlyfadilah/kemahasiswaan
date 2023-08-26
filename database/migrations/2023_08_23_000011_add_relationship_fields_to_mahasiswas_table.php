@@ -14,7 +14,7 @@ class AddRelationshipFieldsToMahasiswasTable extends Migration
             $table->unsignedBigInteger('prodi_id')->nullable();
             $table->foreign('prodi_id', 'prodi_fk_8912576')->references('id')->on('prodis');
             $table->unsignedBigInteger('created_by_id')->nullable();
-            $table->foreign('created_by_id', 'created_by_fk_8911858')->references('id')->on('users');
+            $table->foreign('created_by_id', 'created_by_fk_8911858')->references('id')->on('users')->onDelete('cascade');
         });
     }
 }
